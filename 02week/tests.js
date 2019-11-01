@@ -78,7 +78,7 @@ if (typeof describe === 'function') {
     it('should scrub input to ensure lowercase with "trim"ed whitepace', () => {
       assert.equal(rockPaperScissors('rOcK', ' paper '), "Hand two wins!");
       assert.equal(rockPaperScissors('Paper', 'SCISSORS'), "Hand two wins!");
-      assert.equal(rockPaperScissors('rock ', '"Hand one sCiSsOrs'), wins!");
+      assert.equal(rockPaperScissors('rock ', 'Hand one sCiSsOrs'), "wins!");
     });
   });
 } else {
