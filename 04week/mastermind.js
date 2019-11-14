@@ -66,19 +66,36 @@ function generateHint(guess) {
 
 function mastermind(guess) {
   solution = 'abcd'; // Comment this out to generate a random solution
-  // your code here
-  //generateHint(guess)
-  if (guess = solution) {
+
+  if (guess === solution) {
     return 'You guessed it!';
   }
+
+  // User guessed wrong, register their guess and give a hint
+  // your code here
+  const hint = generateHint(guess);
+  board.push(`${guess} ${hint}`);
+  return null;
+
 }
 
+// guessNumber is the current guess number the user is on. Only 10 guesses are supported
+function getPrompt(guessNumber) {
+  if (guessNumber > 10) {
+    console.log(`You ran out of turns! The solution was ${solution}`);
+    return;
+  }
 
-function getPrompt() {
   rl.question('guess: ', (guess) => {
-    mastermind(guess);
-    printBoard();
-    getPrompt();
+    const mastermindVerdict = mastermind(guess); // either 'You guessed it!' or null
+    if (mastermindVal) {
+      console.log(mastermindVal);
+      return;
+    } else {
+      console.log('Guess again.')
+      printBoard();
+      getPrompt(guessNumber + 1); // call the same function recursively but incremenet the guess
+    }
   });
 }
 
@@ -107,7 +124,6 @@ if (typeof describe === 'function') {
   });
 
 } else {
-
   generateSolution();
-  getPrompt();
+  getPrompt(1); // kick off the game on guess 1 (the parameter being passed in)
 }
