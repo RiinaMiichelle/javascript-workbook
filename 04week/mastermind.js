@@ -28,21 +28,74 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function generateHint() {
-  // your code here
+function generateHint(guess) {
+  const solutionArray = solution.split('');
+  // should be [ 'null', 'null', 'null', 'd' ]
+  
+  const guessArray = guess.split('');
+  // if guess was 'abdc'
+  // should be [ 'a', 'b', 'd', 'c' ]
+
+  let redPegs = 0;
+  let whitePegs = 0;
+
+  // checking for redPegs
+  for (let i = 0; i < solutionArray.length; i++) {
+    if (solutionArray[i] === guessArray[i]) {
+      redPegs++;
+      solutionArray[i] = null;
+    }
+  }
+
+  let targetIndex = null;
+  // checking for whitePegs
+  for (let i = 0; i < guessArray.length; i++) {
+    targetIndex = solutionArray.indexOf(guessArray[i]);
+
+    if (targetIndex > -1) {
+      whitePegs++;
+      solutionArray[targetIndex] = null;
+    }
+  }
+
+  // return a string representation of redPegs and whitePegs variables
+  return `${redPegs}-${whitePegs}`;
+  // return redPegs + '-' + whitePegs;
 }
+
 
 function mastermind(guess) {
   solution = 'abcd'; // Comment this out to generate a random solution
+
+  if (guess === solution) {
+    return 'You guessed it!';
+  }
+
+  // User guessed wrong, register their guess and give a hint
   // your code here
+  const hint = generateHint(guess);
+  board.push(`${guess} ${hint}`);
+  return null;
+
 }
 
+// guessNumber is the current guess number the user is on. Only 10 guesses are supported
+function getPrompt(guessNumber) {
+  if (guessNumber > 10) {
+    console.log(`You ran out of turns! The solution was ${solution}`);
+    return;
+  }
 
-function getPrompt() {
   rl.question('guess: ', (guess) => {
-    mastermind(guess);
-    printBoard();
-    getPrompt();
+    const mastermindVerdict = mastermind(guess); // either 'You guessed it!' or null
+    if (mastermindVal) {
+      console.log(mastermindVal);
+      return;
+    } else {
+      console.log('Guess again.')
+      printBoard();
+      getPrompt(guessNumber + 1); // call the same function recursively but incremenet the guess
+    }
   });
 }
 
@@ -71,7 +124,6 @@ if (typeof describe === 'function') {
   });
 
 } else {
-
   generateSolution();
-  getPrompt();
+  getPrompt(1); // kick off the game on guess 1 (the parameter being passed in)
 }
