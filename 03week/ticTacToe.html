@@ -1,0 +1,203 @@
+<html>
+<head>
+<style type="text/css">
+table {
+display:flex;
+justify-content: center;
+padding-top: 100px;
+background-image: url(XandObackground.jpg);
+background-position: cover;
+}
+td {
+border: 4px solid rgb(41, 39, 39);
+padding: 40px;
+background-color: rgb(152, 156, 148);
+}
+</style>
+</head>
+<body>
+<div id="winBanner">
+
+</div>
+<table>
+<tr>
+<td data-row="0" data-col="0" class="board-square">-</td>
+<td data-row="0" data-col="1" class="board-square">-</td>
+<td data-row="0" data-col="2" class="board-square">-</td>
+</tr>
+<tr>
+<td data-row="1" data-col="0" class="board-square">-</td>
+<td data-row="1" data-col="1" class="board-square">-</td>
+<td data-row="1" data-col="2" class="board-square">-</td>
+</tr>
+<tr>
+<td data-row="2" data-col="0" class="board-square">-</td>
+<td data-row="2" data-col="1" class="board-square">-</td>
+<td data-row="2" data-col="2" class="board-square">-</td>
+</tr>
+</tr>
+</table>
+</body>
+
+
+<script>
+const squares = document.querySelectorAll('.board-square');
+let playerTurn = 'X';
+
+function ticTacToe(row, column) {
+// Your code here
+//manipulate the boardnarray (place an x or o) based on the user input (row, column)
+//manipulate the player turn variable and switch from either X to O or O to X
+
+let selectedRow = board[row];
+selectedRow[column] = playerTurn;
+
+if (checkForWin()){
+console.log("WINNER!!!");
+
+};
+
+console.log(playerTurn);
+if (playerTurn === "X") {
+playerTurn = "O";
+} else if (playerTurn === "O") {
+playerTurn = "X";
+}
+
+console.log(playerTurn);
+}
+
+squares.forEach(function(item) {
+item.addEventListener("click", handleClick);
+});
+
+function handleClick (event) {
+console.log({target: event.target});
+
+let square = event.target;
+square.textContent = playerTurn;
+square.removeEventListener("click", handleClick);
+
+let squareCol =square.dataset.col;
+let squareRow =square.dataset.row;
+
+console.log(squareCol, squareRow);
+
+ticTacToe(squareCol, squareRow);
+}
+
+let board = [
+[' ', ' ', ' '],
+[' ', ' ', ' '],
+[' ', ' ', ' ']
+];
+
+function horizontalWin() {
+
+
+// for (let i=0; i<board.length; i++){
+// if (board[i][0] !== '' &&
+// board[i][0] === board[i][1] &&
+// board[i][0] === board[i][2] &&
+// board[i][1] === board[i][2])
+// return true;
+// // console.log (board);
+// }
+// return false;
+// Your code here
+if (
+board[0][0] === playerTurn &&
+board[0][1] === playerTurn &&
+board[0][2] === playerTurn
+) {
+return true;
+} else if (
+board[1][0] === playerTurn &&
+board[1][1] === playerTurn &&
+board[1][2] === playerTurn
+) {
+return true;
+} else if (
+board[2][0] === playerTurn &&
+board[2][1] === playerTurn &&
+board[2][2] === playerTurn
+) {
+return true;
+}
+
+return false;
+getPrompt();
+}
+
+
+function verticalWin() {
+// Your code here
+if (
+board[0][0] === playerTurn &&
+board[1][0] === playerTurn &&
+board[2][0] === playerTurn
+) {
+return true;
+} else if (
+board[0][1] === playerTurn &&
+board[1][1] === playerTurn &&
+board[2][1] === playerTurn
+) {
+return true;
+} else if (
+board[0][2] === playerTurn &&
+board[1][2] === playerTurn &&
+board[2][2] === playerTurn
+) {
+return true;
+}
+
+return false;
+}
+
+
+function diagonalWin() {
+// Your code here
+if (
+board[0][0] === playerTurn &&
+board[1][1] === playerTurn &&
+board[2][2] === playerTurn
+) {
+return true;
+} else if (
+board[2][0] === playerTurn &&
+board[1][1] === playerTurn &&
+board[0][2] === playerTurn
+) {
+return true;
+}
+}
+
+
+function checkForWin() {
+// Your code here
+//call horizontal, vertical, and diagonal wins
+//return true if any of those checks return true
+if (horizontalWin() || verticalWin() || diagonalWin()) {
+document.getElementById('winBanner').innerText = "YOU WIN!"
+return true;
+}
+return false
+}
+
+function getPrompt() {
+printBoard();
+console.log("It's Player " + playerTurn + "'s turn.");
+rl.question('row: ', (row) => {
+rl.question('column: ', (column) => {
+ticTacToe(row, column);
+getPrompt();
+});
+});
+
+}
+
+</script>
+</html>
+
+
