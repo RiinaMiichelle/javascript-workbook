@@ -1,10 +1,5 @@
 'use strict';
-
 const assert = require('assert');
-
-function forEach(arr, callback) {
-  // Your code here
-}
 
 function map(arr, callback) {
   // Your code here
@@ -14,25 +9,19 @@ function filter(arr, callback) {
   // Your code here
 }
 
-function some(arr, callback) {
+function reduce(arr, callback) {
   // Your code here
 }
 
-function every(arr, callback) {
-  // Your code here
-}
+// function some(arr, callback) {
+//   // Your code here
+// }
 
-// if (typeof describe === 'function') {
+// function every(arr, callback) {
+//   // Your code here
+// }
 
-//   describe('#forEach()', () => {
-//     it('should call the callback the array.length number of times', () => {
-//       let count = 0;
-//       forEach([1, 2, 3], () => {
-//         count++;
-//       });
-//       assert.equal(count, 3);
-//     });
-//   });
+if (typeof describe === 'function') {
 
   describe('#map()', () => {
     const arr = [1, 2, 3];
@@ -55,17 +44,19 @@ function every(arr, callback) {
       assert.deepEqual(filtered, [2]);
     });
   });
-
+  
   describe('#reduce()', () => {
     it('should return a total of all the numbers in an array', () => {
       const reduced = reduce([1, 2, 3], (accumulator, currentValue) => {
         return accumulator + currentValue;
       });
+      // const reduced = [1, 2, 3].reduce((accumulator, currentValue) => {
+      //   return accumulator + currentValue;
+      // });
       assert.deepEqual(reduced, 6);
     });
   });
-
-
+  
 
   // describe('#some()', () => {
   //   let count = 0;
@@ -87,28 +78,28 @@ function every(arr, callback) {
   //   });
   // });
 
-//   describe('#every()', () => {
-//     it('should return true if at all passes the predicate test', () => {
-//       const everied = every([2, 4, 6], (num) => {
-//         return num % 2 === 0;
-//       });
-//       assert.equal(everied, true);
-//     });
-//     let count = 0;
-//     const everied = every([2, 3, 4, 5], (num) => {
-//       count++;
-//       return num % 2 === 0;
-//     });
-//     it('should return false if any item fails the predicate test', () => {
-//       assert.equal(everied, false);
-//     });
-//     it('should stop at the first item that fails the predicate test', () => {
-//       assert.equal(count, 2);
-//     });
-//   });
+  // describe('#every()', () => {
+  //   it('should return true if at all passes the predicate test', () => {
+  //     const everied = every([2, 4, 6], (num) => {
+  //       return num % 2 === 0;
+  //     });
+  //     assert.equal(everied, true);
+  //   });
+  //   let count = 0;
+  //   const everied = every([2, 3, 4, 5], (num) => {
+  //     count++;
+  //     return num % 2 === 0;
+  //   });
+  //   it('should return false if any item fails the predicate test', () => {
+  //     assert.equal(everied, false);
+  //   });
+  //   it('should stop at the first item that fails the predicate test', () => {
+  //     assert.equal(count, 2);
+  //   });
+  // });
 
-// } else {
+} else {
 
-//   console.log('Only run the tests on this one!')
+  console.log('Only run the tests on this one!')
 
-// }
+}
