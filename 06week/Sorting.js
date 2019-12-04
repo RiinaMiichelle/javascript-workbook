@@ -25,10 +25,10 @@ for (i=0; i < numberArray.length; i++) {
 
 console.log(sumEvens);
 
-// // Find the index of the first value when added to it's index = 512 (#ATX!!)
-// const atxIdx;
+// Find the index of the first value when added to it's index = 512 (#ATX!!)
+const atxIdx;
 
-// console.log(`index: ${atxIdx}, value: ${nums[atxIdx]}`);
+console.log(`index: ${atxIdx}, value: ${nums[atxIdx]}`);
 
 // const weather = [
 //   { id: 5743823523151872,
