@@ -1,17 +1,60 @@
 'use strict';
 const assert = require('assert');
 
-function map(arr, callback) {
-  // Your code here
+function map(arr, func) {
+  const newArray = [];
+  for (let i=0; i < arr.length; i++) {
+    newArray.push(func(arr[i]));
+  }
+  return newArray;
+  }
+
+  let arrayItems = ["Robbie", "Sarina", "Maxy", "Owl"];
+const newArrayAfterMap = map(arrayItems,
+  function mapper(whatever) {
+    return whatever + ' Is Home'
+  }
+);
+
+console.log(newArrayAfterMap);
+
+
+
+function filter(arr, func) {
+  let newArray = [];
+  for (let i=0; i < arr.length; i++) {
+    if (func(arr[i])) {
+      newArray.push(arr[i]);
+    }
+  }
+  return newArray;
 }
 
-function filter(arr, callback) {
-  // Your code here
+
+
+let arrayOfItems = ['book', 'car', 21];
+
+function isType(elem) {
+  return typeof elem === 'string' 
 }
 
-function reduce(arr, callback) {
-  // Your code here
+filter(arrayOfItems, isType);
+
+
+
+
+let foodOrder = ["burger 7", "pie 3", "cookie 4"];
+
+
+function reduce(arr) {
+  let totalAmount = 0;
+  for (let i=0; i <arr.length; i++) {
+    totalAmount = arr[i] + totalAmount;
+  }
+  return totalAmount;
 }
+
+reduce(foodOrder);
 
 // function some(arr, callback) {
 //   // Your code here
