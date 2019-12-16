@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 // Array of objects holding Dodgeball Player Info 
 const arrOfPeople = [
   {
@@ -279,3 +281,14 @@ const assignTeam = (teamColor, playerInstance) => {
 
   updateTeamList(teamColor);
 }
+
+
+
+// // Tests
+// if (typeof describe === 'function') {
+//   describe('#makePlayer()', () => {
+//     it('should allow a person to become a player', () => {
+//       makePlayer(2);
+//     });
+//   });
+// }
