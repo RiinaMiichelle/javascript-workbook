@@ -1,5 +1,3 @@
-const assert = require('assert');
-
 // Array of objects holding Dodgeball Player Info 
 const arrOfPeople = [
   {
@@ -116,6 +114,7 @@ class blueTeammate extends player {
     this.mascot = 'blue bird';
   }
 }
+
 class redTeammate extends player {
   constructor(props) {
     super(props);
@@ -146,35 +145,10 @@ const listPeopleChoices = () => {
   listPeopleButton.disabled = true;
 }
 
-// We don't need these two functions because updateTeamList does things for both teams
-// const listOfRedTeam = () => {
-//   const redListElement = document.getElementById('red')
-//   redTeam
-//     .filter(person => person.rendered === false)
-//     .forEach(person => {
-//       const playerListElement = playerToListElement(person);
-//       playerListElement.id = `list-of-redteam-person-${person.id}`
-//       redListElement.append(playerListElement)
-//       person.rendered = true
-//     });
-// }
-
-// const listOfBlueTeam = () => {
-//   const blueListElement = document.getElementById('blue')
-//   blueTeam
-//     .filter(person => person.rendered === false)
-//     .forEach(person => {
-//       const playerListElement = playerToListElement(person);
-//       playerListElement.id = `list-of-blueteam-person-${person.id}`
-//       blueListElement.append(playerListElement)
-//       person.rendered = true
-//     });
-// }
-
 // Will render any players that need to be rendered for a team
 // teamColor is the color of the team to go render players for
 // ex) 'red' or 'blue'
-const updateTeamList = (teamColor) => {
+let updateTeamList = (teamColor) => {
   const teamListElememnt = document.getElementById(teamColor);
 
   let team;
@@ -211,19 +185,14 @@ const playerToListElement = (player) => {
   return li;
 }
 
-//Button that when clicked this function should remove a player from "list of people" & add
-//add it to dodgeball players
-const makePlayer = (id) => {
-  // console.log(`li ${id} was clicked!`)
+// Does the UI manipulation to a person from the list of people
+// to an availabler dodgeball player
+let movePlayerUIManipulation = (playerInstance) => {
+  const id = playerInstance.id;
+
+  // Remove the person from the list of people
   const personListElement = document.getElementById(`list-of-people-person-${id}`);
   personListElement.remove();
-
-  // Get the person from the list by id
-  const newPlayerObject = arrOfPeople.find(player => player.id === id);
-  // Create a player instance for the person
-  const newPersonInstance = new player(newPlayerObject);
-  // Add the player instance to the listOfPlayers array
-  listOfPlayers.push(newPersonInstance);
 
   // Add the player to the DOM
   //// goes to the DOM and gets the players list. 
@@ -235,16 +204,16 @@ const makePlayer = (id) => {
   newPlayerListElement.id = `dodge-ball-player-${id}`; // set a unique id based om the player id
   
   // Add a text node under the new list element with the person's name
-  newPlayerListElement.appendChild(document.createTextNode(newPersonInstance.name))
+  newPlayerListElement.appendChild(document.createTextNode(playerInstance.name))
   
   // Create a button to add to red team and add it under the list element
   const addToRedTeamButton = document.createElement("button");
-  addToRedTeamButton.addEventListener('click', function() {assignTeam('red', newPersonInstance)} )
+  addToRedTeamButton.addEventListener('click', function() {assignTeam('red', playerInstance)} )
   addToRedTeamButton.innerHTML = "+ Red Team";
 
   // Create a button to add to blue team and add it under the list element
   const addToBlueTeamButton = document.createElement("button");
-  addToBlueTeamButton.addEventListener('click', function() {assignTeam('blue', newPersonInstance)} )
+  addToBlueTeamButton.addEventListener('click', function() {assignTeam('blue', playerInstance)} )
   addToBlueTeamButton.innerHTML = "+ Blue Team";
 
   // Put our red and blue team buttons under the list element
@@ -255,11 +224,29 @@ const makePlayer = (id) => {
   playersListInDOM.appendChild(newPlayerListElement);
 }
 
-const assignTeam = (teamColor, playerInstance) => {
-  console.log(`Adding a new player to ${teamColor} team`);
-  // Remove the player from the dodgeball player list
-  const playerToRemove = document.getElementById(`dodge-ball-player-${playerInstance.id}`);
+//Button that when clicked this function should remove a player from "list of people" & add
+//add it to dodgeball players
+const makePlayer = (id) => {
+  // Get the person from the list by id
+  const newPlayerObject = arrOfPeople.find(player => player.id === id);
+  // Create a player instance for the person
+  const newPersonInstance = new player(newPlayerObject);
+  // Add the player instance to the listOfPlayers array
+  listOfPlayers.push(newPersonInstance);
+  // Move the person to the available dodgeball players list in the UI
+  movePlayerUIManipulation(newPersonInstance);
+}
+
+// Will manipulate the UI to remove a player from the dodgeball player list
+// Figures out the player to remove by the playerId passed when invoking the function
+let removePlayerFromDodgeballPlayersList = (playerId) => {
+  const playerToRemove = document.getElementById(`dodge-ball-player-${playerId}`);
   playerToRemove.remove();
+}
+
+const assignTeam = (teamColor, playerInstance) => {
+  // Remove the player from the dodgeball player list
+  removePlayerFromDodgeballPlayersList(playerInstance.id);
 
   // Based on the teamColor variable's value create the right instance of bluePlayer or redPlayer
   let playerAssignedToTeam;
@@ -279,16 +266,64 @@ const assignTeam = (teamColor, playerInstance) => {
     blueTeam.push(playerAssignedToTeam);
   }
 
+  // Create a player in the UI under the right team - either blue or red
   updateTeamList(teamColor);
 }
 
 
 
-// // Tests
-// if (typeof describe === 'function') {
-//   describe('#makePlayer()', () => {
-//     it('should allow a person to become a player', () => {
-//       makePlayer(2);
-//     });
-//   });
-// }
+// Tests
+if (typeof describe === 'function') {
+  const assert = require('assert');
+  describe('#makePlayer()', () => {
+    it('should allow a person to become a player', () => {
+      movePlayerUIManipulation = () => {}
+      assert.equal(listOfPlayers.length, 0);
+      makePlayer(2);
+      assert.equal(listOfPlayers.length, 1);
+      assert.equal(listOfPlayers[0].name, 'Charles Young');
+      assert.equal(listOfPlayers[0].id, 2);
+      assert.equal(listOfPlayers[0].canThrowBall, true);
+      assert.equal(listOfPlayers[0].canDodgeBall, false);
+      assert.equal(listOfPlayers[0].hasPaid, true);
+      assert.equal(listOfPlayers[0].isHealthy, false);
+      assert.equal(listOfPlayers[0].yearsExperience, 20);
+    });
+
+    it('should allow a player to become a blue teammate', () => {
+      let updateTeamListCalled = false;
+  
+      removePlayerFromDodgeballPlayersList = () => {}
+      updateTeamList = (teamColor) => {
+        updateTeamListCalled = true;
+        assert.equal(teamColor, 'blue');
+      }
+
+      assert.equal(blueTeam.length, 0);
+
+      const playerInstance = new player(arrOfPeople[0]);
+      assignTeam('blue', playerInstance);
+
+      assert.equal(updateTeamListCalled, true);
+      assert.equal(blueTeam.length, 1);
+    });
+
+    it('should allow a player to become a red teammate', () => {
+      let updateTeamListCalled = false;
+  
+      removePlayerFromDodgeballPlayersList = () => {}
+      updateTeamList = (teamColor) => {
+        updateTeamListCalled = true;
+        assert.equal(teamColor, 'red');
+      }
+
+      assert.equal(redTeam.length, 0);
+
+      const playerInstance = new player(arrOfPeople[0]);
+      assignTeam('red', playerInstance);
+
+      assert.equal(updateTeamListCalled, true);
+      assert.equal(redTeam.length, 1);
+    });
+  });
+}
