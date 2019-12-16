@@ -7,21 +7,30 @@ window.onload = function() {
 const fetchUsers = () => {
   fetch('https://randomuser.me/api/?results=10')
     .then(res => res.json())
-    .then(users => arrayOfUsers = users)
+    .then(jsonRes => arrayOfUsers = jsonRes.results)
   }
 
-  const consoleUsers = () => {
-    console.log(arrayOfUsers)
-  }
+const consoleUsers = () => {
+  console.log(arrayOfUsers)
+}
 
-  const displayUser = () => {
-    const allUsers = document.getElementById('all-users')
-    arrayOfUsers.map((user, index) => {
-      const li = document.createElement('li')
-      const text = document.createTextNode(`#${index}, Name: ${user.name}:  ${user.body}, by Picture: ${user.userId}`)
-      li.appendChild(text)
-      allUsers.append(li)
-    })
-  }
+const getFullName = (user) => {
+  return `${user.name.title} ${user.name.first} ${user.name.last}`;
+}
+
+const displayUser = () => {
+  const allUsers = document.getElementById('all-users')
+  console.log(arrayOfUsers);
+  arrayOfUsers.map((user, index) => {
+    console.log(user);
+    const li = document.createElement('li')
+    const text = document.createTextNode(`Name: ${getFullName(user)}`)
+    const imgElement = document.createElement('img');
+    imgElement.src = user.picture.large;
+    li.appendChild(text)
+    li.appendChild(imgElement)
+    allUsers.append(li)
+  })
+}
 
 
