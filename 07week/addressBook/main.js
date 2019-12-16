@@ -29,6 +29,21 @@ const displayUser = () => {
     imgElement.src = user.picture.large;
     li.appendChild(text)
     li.appendChild(imgElement)
+
+
+    const button = document.createElement("button")
+    button.innerHTML = "More Information"
+    button.addEventListener('click', function() {
+      button.remove()
+      const dobDiv = document.createElement('div');
+      dobDiv.innerHTML = `DOB: ${user.dob.date}`
+      const locationDiv = document.createElement('div');
+      locationDiv.innerHTML = `Location: ${user.location.state}, ${user.location.country}`
+      li.appendChild(locationDiv)
+      li.appendChild(dobDiv)
+    })
+    li.appendChild(button)
+
     allUsers.append(li)
   })
 }
